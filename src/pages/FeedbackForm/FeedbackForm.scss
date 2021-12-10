@@ -1,41 +1,46 @@
 .w-25 label {
   width: 100%;
 }
-// .feedbackForm {
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-//   align-items: center;
-// }
-.feedbackForm > div {
-  max-width: 700px;
-  margin: 0 auto;
+.feedbackForm {
+  > div {
+    max-width: 60%;
+    margin: 0 auto;
+  }
+  label {
+    width: 100%;
+  }
 }
-.feedbackForm label {
-  width: 100%;
+
+td {
+  div {
+    label {
+      width: 100%;
+      height: 30px;
+      background: #e4e4e4;
+      margin: 5px;
+      cursor: text;
+      border-radius: 5px;
+      input {
+        margin-top: 9px;
+      }
+    }
+  }
 }
-td form label {
-  width: 100%;
-  height: 30px;
-  background: #e4e4e4;
-  margin: 5px;
-  border-radius: 5px;
-}
-td form label input {
-  margin-top: 9px;
-}
+
 .feedback-txt {
   background: #e4e4e4;
 }
 th img {
-  width: 63px;
+  width: 50%;
+  margin-left: 28px;
 }
-tr td form {
+
+tr td div {
   display: flex;
-  width: 200px;
+  width: 100%;
 }
 .first-col {
-  width: 220px;
+  width: 28%;
 }
 .table > :not(:first-child) {
   border-top: 2px solid #dee2e6 !important;
@@ -46,10 +51,63 @@ label input {
   align-items: center;
   width: 100%;
 }
-.table thead th,
 .table thead th {
   border-bottom: none !important;
-}
-.table thead th {
   border-top: none !important;
 }
+
+.txt1 {
+  text-align: center;
+}
+.txt2 {
+  background: none !important;
+  margin-top: -4%;
+  font-size: 100%;
+  font-weight: 700;
+}
+tbody,
+td,
+tfoot,
+th,
+thead,
+tr {
+  border-top: 0px !important;
+}
+
+// Media queries
+@media only screen and(max-width: 768px) {
+  ::placeholder {
+    font-size: 8px;
+  }
+  th img {
+    width: 100%;
+  }
+  .feedbackForm > div {
+    max-width: 100%;
+  }
+  tr th {
+    font-size: 13px;
+    font-weight: 700;
+  }
+  div h4 {
+    font-size: 15.5px;
+  }
+  .info-txt {
+    text-align: justify;
+    font-size: 14px;
+  }
+  th img {
+    margin-left: 0px;
+  }
+  .txt1 span {
+    font-size: 13px;
+  }
+}
+// @media only screen and (-webkit-min-device-pixel-ratio: 0) {
+//   @media only screen and (max-width: 768px) {
+//     td div label input {
+//       margin-left: 33% !important;
+//       margin-top: 15%;
+//     }
+//   }
+// }

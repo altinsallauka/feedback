@@ -2,10 +2,17 @@ import React, { useState, useEffect } from "react";
 // import axios from "axios";
 import "./FeedbackForm.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { addList } from "./actions";
+import { addList, postFeedback } from "./actions";
 import pic1 from "../../assets/p1.png";
 import pic2 from "../../assets/p2.png";
 import pic3 from "../../assets/p3.png";
+import ModalComponent from "./../../components/modal/modal";
+import Modal from "react-modal";
+import { toggleModal } from "../../components/modal/actions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { FormErrors } from "./../../components/form-errors/FormErrors";
+Modal.setAppElement("body");
 const FeedbackForm = (props) => {
   //   const globalState = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -143,87 +150,251 @@ const FeedbackForm = (props) => {
       rtypemenu: "Meal:Rations,10man,Hindu,Menu 3",
     },
   ]);
+
   const [selectedPid, setSelectedPid] = useState("");
   const [lotNo, setLotNo] = useState("");
-  const [rangeOfIngredients, setRangeOfIngredients] = useState([
-    {
-      optionName: "Range of ingredients",
-      optionId: 0,
-      options: [
-        { radioName: "Very good", selected: false },
-        { radioName: "All right", selected: false },
-        { radioName: "Do not like", selected: false },
-      ],
-    },
-  ]);
-  const [easeOfUsingIngredients, setEaseOfUsingIngredients] = useState([
-    {
-      optionName: "Ease of using ingredients",
-      optionId: 1,
-      options: [
-        { radioName: "Very good", selected: false },
-        { radioName: "All right", selected: false },
-        { radioName: "Do not like", selected: false },
-      ],
-    },
-  ]);
-  const [flexibilityOfIngredients, setFlexibilityOfIngredients] = useState([
-    {
-      optionName: "Ease of using ingredients",
-      optionId: 2,
-      options: [
-        { radioName: "Very good", selected: false },
-        { radioName: "All right", selected: false },
-        { radioName: "Do not like", selected: false },
-      ],
-    },
-  ]);
-  const [flavorProfile, setFlavorProfile] = useState([
-    {
-      optionName: "Flavor Profile",
-      optionId: 3,
-      options: [
-        { radioName: "Very good", selected: false },
-        { radioName: "All right", selected: false },
-        { radioName: "Do not like", selected: false },
-      ],
-    },
-  ]);
-  const [overallRation, setOverallRation] = useState([
-    {
-      optionName: "Overall Ration",
-      optionId: 4,
-      options: [
-        { radioName: "Very good", selected: false },
-        { radioName: "All right", selected: false },
-        { radioName: "Do not like", selected: false },
-      ],
-    },
-  ]);
+  const [rangeOfIngredients, setRangeOfIngredients] = useState({
+    optionName: "Range of ingredients",
+    optionId: 0,
+    options: [
+      { radioName: "Very good", selected: null },
+      { radioName: "All right", selected: null },
+      { radioName: "Do not like", selected: null },
+    ],
+    comment: "",
+  });
+  const [easeOfUsingIngredients, setEaseOfUsingIngredients] = useState({
+    optionName: "Ease of using ingredients",
+    optionId: 1,
+    options: [
+      { radioName: "Very good", selected: null },
+      { radioName: "All right", selected: null },
+      { radioName: "Do not like", selected: null },
+    ],
+  });
+  const [flexibilityOfIngredients, setFlexibilityOfIngredients] = useState({
+    optionName: "Flexibility of Ingredients",
+    optionId: 2,
+    options: [
+      { radioName: "Very good", selected: null },
+      { radioName: "All right", selected: null },
+      { radioName: "Do not like", selected: null },
+    ],
+  });
+  const [flavorProfile, setFlavorProfile] = useState({
+    optionName: "Flavor Profile",
+    optionId: 3,
+    options: [
+      { radioName: "Very good", selected: null },
+      { radioName: "All right", selected: null },
+      { radioName: "Do not like", selected: null },
+    ],
+  });
+  const [overallRation, setOverallRation] = useState({
+    optionName: "Overall Ration",
+    optionId: 4,
+    options: [
+      { radioName: "Very good", selected: null },
+      { radioName: "All right", selected: null },
+      { radioName: "Do not like", selected: null },
+    ],
+  });
   const [additionalComments, setAdditionalComments] = useState("");
+  const [errors, setErrors] = useState({});
+  const [formIsValid, setFormIsValid] = useState(false);
+  const modalTitle = "Success";
+
+  // method to validate values
+  const handleValidation = () => {
+    let errors = {};
+    let isValid = true;
+    if (selectedPid.length < 10) {
+      // setFormIsValid(false);
+      isValid = false;
+      errors["selectedPid"] = "Please select an element from dropdown";
+    } else {
+      // setFormIsValid(true);
+      isValid = true;
+      errors["selectedPid"] = "";
+    }
+    //rangeOfIngredients check if is empty or not
+    if (rangeOfIngredients.options.every((item) => !item.selected)) {
+      // setFormIsValid(false);
+      isValid = false;
+      errors["rangeOfIngredients"] = "An option should be selected";
+    } else {
+      // setFormIsValid(true);
+      isValid = true;
+      errors["rangeOfIngredients"] = "";
+    }
+    if (easeOfUsingIngredients.options.every((item) => !item.selected)) {
+      // setFormIsValid(false);
+      isValid = false;
+      errors["easeOfUsingIngredients"] = "An option should be selected";
+    } else {
+      // setFormIsValid(true);
+      isValid = true;
+      // console.log(" checked");
+      errors["easeOfUsingIngredients"] = "";
+    }
+    if (flexibilityOfIngredients.options.every((item) => !item.selected)) {
+      isValid = false;
+      // setFormIsValid(false);
+      errors["flexibilityOfIngredients"] = "An option should be selected";
+    } else {
+      // setFormIsValid(true);
+      isValid = true;
+      // console.log(" checked");
+      errors["flexibilityOfIngredients"] = "";
+    }
+    if (flavorProfile.options.every((item) => !item.selected)) {
+      // formIsValid = false;
+      // setFormIsValid(false);
+      isValid = false;
+      errors["flavorProfile"] = "An option should be selected";
+    } else {
+      // setFormIsValid(true);
+      isValid = true;
+      // console.log(" checked");
+      errors["flavorProfile"] = "";
+    }
+    if (overallRation.options.every((item) => !item.selected)) {
+      isValid = false;
+      // setFormIsValid(false);
+      errors["overallRation"] = "An option should be selected";
+    } else {
+      // setFormIsValid(true);
+      isValid = true;
+      // console.log(" checked");
+      errors["overallRation"] = "";
+    }
+    setErrors(errors);
+    setFormIsValid(true);
+    return isValid;
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    // let formIsValid = true;
+    // let erors = errors;
+    switch (name) {
+      case "PID":
+        setSelectedPid(e.target.value);
+        errors["selectedPid"] = "";
+        break;
+      case "lotNo":
+        setLotNo(e.target.value);
+        // console.log(e.target.value);
+        // if (e.target.value.length < 6) {
+        //   errors["lotNo"] = "Cannot be empty";
+        //   setFormIsValid(true);
+        //   console.log("error", e.target.value);
+        // } else {
+        //   errors["lotNo"] = " ";
+        //   console.log("ok");
+        //   setFormIsValid(false);
+        // }
+        break;
+      case "Rangeofingredients":
+        setRangeOfIngredients({
+          ...rangeOfIngredients,
+          options: rangeOfIngredients.options.map((item) => {
+            if (e.target.value === item.radioName) {
+              item.selected = true;
+            } else {
+              item.selected = false;
+            }
+            return item;
+          }),
+        });
+        errors["rangeOfIngredients"] = "";
+        break;
+      case "Easeofusingingredients":
+        setEaseOfUsingIngredients({
+          ...easeOfUsingIngredients,
+          options: easeOfUsingIngredients.options.map((item) => {
+            if (e.target.value === item.radioName) {
+              item.selected = true;
+            } else {
+              item.selected = false;
+            }
+            return item;
+          }),
+        });
+        errors["easeOfUsingIngredients"] = "";
+        break;
+      case "FlexibilityofIngredients":
+        setFlexibilityOfIngredients({
+          ...flexibilityOfIngredients,
+          options: flexibilityOfIngredients.options.map((item) => {
+            if (e.target.value === item.radioName) {
+              item.selected = true;
+            } else {
+              item.selected = false;
+            }
+            return item;
+          }),
+        });
+        errors["flexibilityOfIngredients"] = "";
+        break;
+      case "FlavorProfile":
+        setFlavorProfile({
+          ...flavorProfile,
+          options: flavorProfile.options.map((item) => {
+            if (e.target.value === item.radioName) {
+              item.selected = true;
+            } else {
+              item.selected = false;
+            }
+            return item;
+          }),
+        });
+        errors["flavorProfile"] = "";
+        break;
+      case "OverallRation":
+        setOverallRation({
+          ...overallRation,
+          options: overallRation.options.map((item) => {
+            if (e.target.value === item.radioName) {
+              item.selected = true;
+            } else {
+              item.selected = false;
+            }
+            return item;
+          }),
+        });
+        errors["overallRation"] = "";
+        break;
+      default:
+        break;
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Feedback Form value:");
+    if (handleValidation()) {
+      // alert("Form submitted");
+      // dispatch(toggleModal(true));
+      // setFormIsValid(true);
+      dispatch(
+        postFeedback({
+          selectedPid,
+          lotNo,
+          rangeOfIngredients,
+          easeOfUsingIngredients,
+          flexibilityOfIngredients,
+          flavorProfile,
+          overallRation,
+          additionalComments,
+        })
+      ).then(dispatch(toggleModal(true)));
+    } else {
+      // setFormIsValid(false);
+      console.log("Form is not valid");
+    }
+
+    // console.log("Feedback Form value:");
   };
 
-  const onInputChange = (list) => {
-    // console.log(list);
-    const nexState = list.map((el) => {
-      if (el.optionName !== list.optionName) return el;
-      return {
-        ...el,
-        options: el.options.map((opt) => {
-          const checked = opt.radioName === list.value;
-          return {
-            ...opt,
-            selected: checked,
-          };
-        }),
-      };
-    });
-    console.log(nexState);
-  };
   useEffect(() => {
     // console.log(samples);
     dispatch(addList(samples));
@@ -242,7 +413,7 @@ const FeedbackForm = (props) => {
                   className="form-select"
                   name="PID"
                   aria-label="Default select example"
-                  onChange={(e) => setSelectedPid(e.target.value)}
+                  onChange={handleChange}
                 >
                   <option disabled selected>
                     Select one PID Nr. - Ration Type / Menu:
@@ -256,18 +427,23 @@ const FeedbackForm = (props) => {
               </label>
             </div>
             <div className="d-flex align-items-center">
+              <span style={{ color: "red" }}>{errors["selectedPid"]}</span>
+            </div>
+            <div className="d-flex align-items-center">
               <label className="d-flex flex-column align-items-start">
                 LOT No.
                 <input
-                  type="text"
+                  type="number"
                   name="lotNo"
                   className="form-control"
-                  onChange={(e) => setLotNo(e.target.value)}
+                  onChange={handleChange}
                 />
               </label>
+
+              <span style={{ color: "red" }}>{errors["lotNo"]}</span>
             </div>
             <div className="d-flex align-items-center feedback-txt shadow-sm p-3 mb-2 rounded">
-              <span>
+              <span className="info-txt">
                 Look at the different categories and mark the matching face. You
                 can also make comments on the box below about specific subjects.
               </span>
@@ -277,75 +453,93 @@ const FeedbackForm = (props) => {
                 <thead>
                   <tr>
                     <th scope="col"></th>
-                    <th scope="col" className="d-flex">
+
+                    <th scope="col" className="d-flex test1">
                       <div>
                         <img
                           src={pic1}
                           className="img-rounded"
-                          alt="Cinque Terre"
+                          alt="Very good"
                         />
                       </div>
+
                       <div>
                         <img
                           src={pic2}
                           className="img-rounded"
-                          alt="Cinque Terre"
+                          alt="All right"
                         />
                       </div>
+
                       <div>
                         <img
                           src={pic3}
                           className="img-rounded"
-                          alt="Cinque Terre"
+                          alt="Do not like"
                         />
                       </div>
                     </th>
-                    <th>Comment</th>
+
+                    {/* <th>Comment</th> */}
+                  </tr>
+
+                  <tr>
+                    <th className="first-col txt"></th>
+
+                    <td>
+                      <div className="txt1">
+                        <label className="txt2">Very good</label>
+                        <label className="txt2">All right</label>
+
+                        <label className="txt2">Do not like</label>
+                      </div>
+                    </td>
+
+                    <td></td>
                   </tr>
                 </thead>
 
                 <tbody>
                   <tr>
-                    <th className="first-col">
-                      {rangeOfIngredients.optionName}
-                    </th>
+                    <th className="first-col">Range of Ingredients</th>
                     <td>
-                      {/* {rangeOfIngredients.map((rangeOfIngredient) => (
-                        <ul>
-                          {rangeOfIngredient.optionName}
-                          {rangeOfIngredient.options.map((option) => {
+                      <div>
+                        {rangeOfIngredients &&
+                          rangeOfIngredients.options.map((el) => {
                             return (
-                              <input
-                                type="radio"
-                                name={rangeOfIngredient.radioName}
-                                value={option.radioName}
-                                checked={!!option.selected}
-                                // onChange={(e)=>{setRangeOfIngredients(...rangeOfIngredients, options:[radioName:rangeOfIngredient,selected:option.selected])}}
-                                onChange={onInputChange(option)}
-                              />
+                              <label className="radio-inline">
+                                <input
+                                  type="radio"
+                                  name={rangeOfIngredients.optionName.replaceAll(
+                                    " ",
+                                    ""
+                                  )}
+                                  value={el.radioName}
+                                  defaultChecked={el.selected}
+                                  onChange={handleChange}
+                                />
+                              </label>
                             );
                           })}
-                        </ul>
-                      ))} */}
-                      <form>
-                        <label className="radio-inline">
-                          <input type="radio" name="optradio" checked />
-                        </label>
-                        <label className="radio-inline">
-                          <input type="radio" name="optradio" />
-                        </label>
-                        <label className="radio-inline">
-                          <input type="radio" name="optradio" />
-                        </label>
-                      </form>
+                      </div>
+
+                      <span style={{ color: "red" }}>
+                        {errors["rangeOfIngredients"]}
+                      </span>
                     </td>
                     <td>
                       <div className="d-flex align-items-center">
                         <input
                           type="text"
-                          name="lotNo"
+                          name="comment"
                           className="form-control"
-                          onChange={(e) => setLotNo(e.target.value)}
+                          placeholder="Comment"
+                          onChange={(e) =>
+                            setRangeOfIngredients({
+                              ...rangeOfIngredients,
+                              comment: e.target.value,
+                            })
+                          }
                         />
                       </div>
                     </td>
@@ -353,25 +547,42 @@ const FeedbackForm = (props) => {
                   <tr>
                     <th className="first-col">Ease of using Ingredients</th>
                     <td>
-                      <form>
-                        <label className="radio-inline">
-                          <input type="radio" name="optradio" checked />
-                        </label>
-                        <label className="radio-inline">
-                          <input type="radio" name="optradio" />
-                        </label>
-                        <label className="radio-inline">
-                          <input type="radio" name="optradio" />
-                        </label>
-                      </form>
+                      <div>
+                        {easeOfUsingIngredients &&
+                          easeOfUsingIngredients.options.map((el) => {
+                            return (
+                              <label className="radio-inline">
+                                <input
+                                  type="radio"
+                                  name={easeOfUsingIngredients.optionName.replaceAll(
+                                    " ",
+                                    ""
+                                  )}
+                                  value={el.radioName}
+                                  defaultChecked={el.selected}
+                                  onChange={handleChange}
+                                />
+                              </label>
+                            );
+                          })}
+                      </div>
+                      <span style={{ color: "red" }}>
+                        {errors["easeOfUsingIngredients"]}
+                      </span>
                     </td>
                     <td>
                       <div className="d-flex align-items-center">
                         <input
                           type="text"
-                          name="lotNo"
+                          name="comment"
                           className="form-control"
-                          onChange={(e) => setLotNo(e.target.value)}
+                          placeholder="Comment"
+                          onChange={(e) =>
+                            setEaseOfUsingIngredients({
+                              ...easeOfUsingIngredients,
+                              comment: e.target.value,
+                            })
+                          }
                         />
                       </div>
                     </td>
@@ -379,25 +590,42 @@ const FeedbackForm = (props) => {
                   <tr>
                     <th className="first-col">Flexibility of Ingredients</th>
                     <td>
-                      <form>
-                        <label className="radio-inline">
-                          <input type="radio" name="optradio" checked />
-                        </label>
-                        <label className="radio-inline">
-                          <input type="radio" name="optradio" />
-                        </label>
-                        <label className="radio-inline">
-                          <input type="radio" name="optradio" />
-                        </label>
-                      </form>
+                      <div>
+                        {flexibilityOfIngredients &&
+                          flexibilityOfIngredients.options.map((el) => {
+                            return (
+                              <label className="radio-inline">
+                                <input
+                                  type="radio"
+                                  name={flexibilityOfIngredients.optionName.replaceAll(
+                                    " ",
+                                    ""
+                                  )}
+                                  value={el.radioName}
+                                  defaultChecked={el.selected}
+                                  onChange={handleChange}
+                                />
+                              </label>
+                            );
+                          })}
+                      </div>
+                      <span style={{ color: "red" }}>
+                        {errors["flexibilityOfIngredients"]}
+                      </span>
                     </td>
                     <td>
                       <div className="d-flex align-items-center">
                         <input
                           type="text"
-                          name="lotNo"
+                          name="comment"
                           className="form-control"
-                          onChange={(e) => setLotNo(e.target.value)}
+                          placeholder="Comment"
+                          onChange={(e) =>
+                            setFlexibilityOfIngredients({
+                              ...flexibilityOfIngredients,
+                              comment: e.target.value,
+                            })
+                          }
                         />
                       </div>
                     </td>
@@ -405,25 +633,42 @@ const FeedbackForm = (props) => {
                   <tr>
                     <th className="first-col">Flavor Profile</th>
                     <td>
-                      <form>
-                        <label className="radio-inline">
-                          <input type="radio" name="optradio" checked />
-                        </label>
-                        <label className="radio-inline">
-                          <input type="radio" name="optradio" />
-                        </label>
-                        <label className="radio-inline">
-                          <input type="radio" name="optradio" />
-                        </label>
-                      </form>
+                      <div>
+                        {flavorProfile &&
+                          flavorProfile.options.map((el) => {
+                            return (
+                              <label className="radio-inline">
+                                <input
+                                  type="radio"
+                                  name={flavorProfile.optionName.replaceAll(
+                                    " ",
+                                    ""
+                                  )}
+                                  value={el.radioName}
+                                  defaultChecked={el.selected}
+                                  onChange={handleChange}
+                                />
+                              </label>
+                            );
+                          })}
+                      </div>
+                      <span style={{ color: "red" }}>
+                        {errors["flavorProfile"]}
+                      </span>
                     </td>
                     <td>
                       <div className="d-flex align-items-center">
                         <input
                           type="text"
-                          name="lotNo"
+                          name="comment"
                           className="form-control"
-                          onChange={(e) => setLotNo(e.target.value)}
+                          placeholder="Comment"
+                          onChange={(e) =>
+                            setFlavorProfile({
+                              ...flavorProfile,
+                              comment: e.target.value,
+                            })
+                          }
                         />
                       </div>
                     </td>
@@ -431,25 +676,42 @@ const FeedbackForm = (props) => {
                   <tr>
                     <th className="first-col">Overall Ration</th>
                     <td>
-                      <form>
-                        <label className="radio-inline">
-                          <input type="radio" name="optradio" checked />
-                        </label>
-                        <label className="radio-inline">
-                          <input type="radio" name="optradio" />
-                        </label>
-                        <label className="radio-inline">
-                          <input type="radio" name="optradio" />
-                        </label>
-                      </form>
+                      <div>
+                        {overallRation &&
+                          overallRation.options.map((el) => {
+                            return (
+                              <label className="radio-inline">
+                                <input
+                                  type="radio"
+                                  name={overallRation.optionName.replaceAll(
+                                    " ",
+                                    ""
+                                  )}
+                                  value={el.radioName}
+                                  defaultChecked={el.selected}
+                                  onChange={handleChange}
+                                />
+                              </label>
+                            );
+                          })}
+                      </div>
+                      <span style={{ color: "red" }}>
+                        {errors["overallRation"]}
+                      </span>
                     </td>
                     <td>
                       <div className="d-flex align-items-center">
                         <input
                           type="text"
-                          name="lotNo"
+                          name="comment"
                           className="form-control"
-                          onChange={(e) => setLotNo(e.target.value)}
+                          placeholder="Comment"
+                          onChange={(e) =>
+                            setOverallRation({
+                              ...overallRation,
+                              comment: e.target.value,
+                            })
+                          }
                         />
                       </div>
                     </td>
@@ -469,9 +731,9 @@ const FeedbackForm = (props) => {
               </label>
             </div>
             <div className="d-flex align-items-center p-3 rounded">
-              <span>
+              <span className="info-txt">
                 The information received will be used to further develop the
-                Combat ration Packs and imporve the service. The feedbach will
+                Combat ration Packs and improve the service. The feedback will
                 be kept anonymous.
               </span>
             </div>
@@ -480,6 +742,7 @@ const FeedbackForm = (props) => {
                 type="submit"
                 className="btn btn-primary mt-2"
                 value="Submit Feedback"
+                // disabled={!formIsValid}
               />
             </div>
             <div className="mt-3 bg-black rounded">
@@ -490,6 +753,20 @@ const FeedbackForm = (props) => {
           </form>
         </div>
       </div>
+      <ModalComponent modalTitle={modalTitle} className="mt-4">
+        <div>
+          <span>Thank you for giving your feedback!</span>
+          <FontAwesomeIcon
+            icon={faCheckCircle}
+            className="ml-2 text-primary"
+            size="2x"
+          />
+        </div>
+      </ModalComponent>
+
+      {/* <div className="panel panel-default">
+        <FormErrors formErrors={errors} />
+      </div> */}
     </React.Fragment>
   );
 };
