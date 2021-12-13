@@ -204,21 +204,6 @@ const FeedbackForm = (props) => {
   const [formIsValid, setFormIsValid] = useState(false);
   const modalTitle = "Success";
 
-  const checkSelected = (list) => {
-    let isValid = true;
-    let option = Object.values(list)[0].replaceAll(" ", "");
-    let options = list.options;
-    if (options.every((item) => !item.selected)) {
-      isValid = false;
-      setErrors({ ...errors, option: "An option should be selected" });
-      // errors[option] = "An option should be selected";
-    } else {
-      isValid = true;
-      errors[option] = "";
-      // setErrors({ ...errors, optionName: "" });
-    }
-    console.log(errors);
-  };
   // method to validate values
   const handleValidation = () => {
     let errors = {};
