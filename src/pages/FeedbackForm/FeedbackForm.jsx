@@ -200,74 +200,107 @@ const FeedbackForm = (props) => {
     ],
   });
   const [additionalComments, setAdditionalComments] = useState("");
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState([]);
   const [formIsValid, setFormIsValid] = useState(false);
   const modalTitle = "Success";
 
+  const checkSelected = (list) => {
+    let isValid = true;
+    let option = Object.values(list)[0].replaceAll(" ", "");
+    let options = list.options;
+    if (options.every((item) => !item.selected)) {
+      isValid = false;
+      setErrors({ ...errors, option: "An option should be selected" });
+      // errors[option] = "An option should be selected";
+    } else {
+      isValid = true;
+      errors[option] = "";
+      // setErrors({ ...errors, optionName: "" });
+    }
+    console.log(errors);
+  };
   // method to validate values
   const handleValidation = () => {
     let errors = {};
     let isValid = true;
     if (selectedPid.length < 10) {
-      // setFormIsValid(false);
       isValid = false;
       errors["selectedPid"] = "Please select an element from dropdown";
     } else {
-      // setFormIsValid(true);
       isValid = true;
       errors["selectedPid"] = "";
     }
-    //rangeOfIngredients check if is empty or not
-    if (rangeOfIngredients.options.every((item) => !item.selected)) {
-      // setFormIsValid(false);
-      isValid = false;
-      errors["rangeOfIngredients"] = "An option should be selected";
-    } else {
-      // setFormIsValid(true);
-      isValid = true;
-      errors["rangeOfIngredients"] = "";
-    }
-    if (easeOfUsingIngredients.options.every((item) => !item.selected)) {
-      // setFormIsValid(false);
-      isValid = false;
-      errors["easeOfUsingIngredients"] = "An option should be selected";
-    } else {
-      // setFormIsValid(true);
-      isValid = true;
-      // console.log(" checked");
-      errors["easeOfUsingIngredients"] = "";
-    }
-    if (flexibilityOfIngredients.options.every((item) => !item.selected)) {
-      isValid = false;
-      // setFormIsValid(false);
-      errors["flexibilityOfIngredients"] = "An option should be selected";
-    } else {
-      // setFormIsValid(true);
-      isValid = true;
-      // console.log(" checked");
-      errors["flexibilityOfIngredients"] = "";
-    }
-    if (flavorProfile.options.every((item) => !item.selected)) {
-      // formIsValid = false;
-      // setFormIsValid(false);
-      isValid = false;
-      errors["flavorProfile"] = "An option should be selected";
-    } else {
-      // setFormIsValid(true);
-      isValid = true;
-      // console.log(" checked");
-      errors["flavorProfile"] = "";
-    }
-    if (overallRation.options.every((item) => !item.selected)) {
-      isValid = false;
-      // setFormIsValid(false);
-      errors["overallRation"] = "An option should be selected";
-    } else {
-      // setFormIsValid(true);
-      isValid = true;
-      // console.log(" checked");
-      errors["overallRation"] = "";
-    }
+    const checkSelected = (list) => {
+      let isValid = true;
+      let option = Object.values(list)[0].replaceAll(" ", "");
+      let options = list.options;
+      if (options.every((item) => !item.selected)) {
+        isValid = false;
+        // setErrors({ ...errors, option: "An option should be selected" });
+        errors[option] = "An option should be selected";
+      } else {
+        isValid = true;
+        errors[option] = "";
+        // setErrors({ ...errors, optionName: "" });
+      }
+      console.log(errors);
+    };
+    checkSelected(rangeOfIngredients);
+    checkSelected(easeOfUsingIngredients);
+    checkSelected(flexibilityOfIngredients);
+    checkSelected(flavorProfile);
+    checkSelected(overallRation);
+    // //rangeOfIngredients check if is empty or not
+    // if (rangeOfIngredients.options.every((item) => !item.selected)) {
+    //   // setFormIsValid(false);
+    //   isValid = false;
+    //   errors["rangeOfIngredients"] = "An option should be selected";
+    // } else {
+    //   // setFormIsValid(true);
+    //   isValid = true;
+    //   errors["rangeOfIngredients"] = "";
+    // }
+    // if (easeOfUsingIngredients.options.every((item) => !item.selected)) {
+    //   // setFormIsValid(false);
+    //   isValid = false;
+    //   errors["easeOfUsingIngredients"] = "An option should be selected";
+    // } else {
+    //   // setFormIsValid(true);
+    //   isValid = true;
+    //   // console.log(" checked");
+    //   errors["easeOfUsingIngredients"] = "";
+    // }
+    // if (flexibilityOfIngredients.options.every((item) => !item.selected)) {
+    //   isValid = false;
+    //   // setFormIsValid(false);
+    //   errors["flexibilityOfIngredients"] = "An option should be selected";
+    // } else {
+    //   // setFormIsValid(true);
+    //   isValid = true;
+    //   // console.log(" checked");
+    //   errors["flexibilityOfIngredients"] = "";
+    // }
+    // if (flavorProfile.options.every((item) => !item.selected)) {
+    //   // formIsValid = false;
+    //   // setFormIsValid(false);
+    //   isValid = false;
+    //   errors["flavorProfile"] = "An option should be selected";
+    // } else {
+    //   // setFormIsValid(true);
+    //   isValid = true;
+    //   // console.log(" checked");
+    //   errors["flavorProfile"] = "";
+    // }
+    // if (overallRation.options.every((item) => !item.selected)) {
+    //   isValid = false;
+    //   // setFormIsValid(false);
+    //   errors["overallRation"] = "An option should be selected";
+    // } else {
+    //   // setFormIsValid(true);
+    //   isValid = true;
+    //   // console.log(" checked");
+    //   errors["overallRation"] = "";
+    // }
     setErrors(errors);
     setFormIsValid(true);
     return isValid;
@@ -278,7 +311,7 @@ const FeedbackForm = (props) => {
     // let erors = errors;
     switch (name) {
       case "PID":
-        setSelectedPid(e.target.value);
+        setSelectedPid(value);
         errors["selectedPid"] = "";
         break;
       case "lotNo":
@@ -306,7 +339,7 @@ const FeedbackForm = (props) => {
             return item;
           }),
         });
-        errors["rangeOfIngredients"] = "";
+        errors["Rangeofingredients"] = "";
         break;
       case "Easeofusingingredients":
         setEaseOfUsingIngredients({
@@ -320,7 +353,7 @@ const FeedbackForm = (props) => {
             return item;
           }),
         });
-        errors["easeOfUsingIngredients"] = "";
+        errors["Easeofusingingredients"] = "";
         break;
       case "FlexibilityofIngredients":
         setFlexibilityOfIngredients({
@@ -334,7 +367,7 @@ const FeedbackForm = (props) => {
             return item;
           }),
         });
-        errors["flexibilityOfIngredients"] = "";
+        errors["FlexibilityofIngredients"] = "";
         break;
       case "FlavorProfile":
         setFlavorProfile({
@@ -348,7 +381,7 @@ const FeedbackForm = (props) => {
             return item;
           }),
         });
-        errors["flavorProfile"] = "";
+        errors["FlavorProfile"] = "";
         break;
       case "OverallRation":
         setOverallRation({
@@ -362,7 +395,7 @@ const FeedbackForm = (props) => {
             return item;
           }),
         });
-        errors["overallRation"] = "";
+        errors["OverallRation"] = "";
         break;
       default:
         break;
@@ -524,7 +557,7 @@ const FeedbackForm = (props) => {
                       </div>
 
                       <span style={{ color: "red" }}>
-                        {errors["rangeOfIngredients"]}
+                        {errors["Rangeofingredients"]}
                       </span>
                     </td>
                     <td>
@@ -567,7 +600,7 @@ const FeedbackForm = (props) => {
                           })}
                       </div>
                       <span style={{ color: "red" }}>
-                        {errors["easeOfUsingIngredients"]}
+                        {errors["Easeofusingingredients"]}
                       </span>
                     </td>
                     <td>
@@ -610,7 +643,7 @@ const FeedbackForm = (props) => {
                           })}
                       </div>
                       <span style={{ color: "red" }}>
-                        {errors["flexibilityOfIngredients"]}
+                        {errors["FlexibilityofIngredients"]}
                       </span>
                     </td>
                     <td>
@@ -653,7 +686,7 @@ const FeedbackForm = (props) => {
                           })}
                       </div>
                       <span style={{ color: "red" }}>
-                        {errors["flavorProfile"]}
+                        {errors["FlavorProfile"]}
                       </span>
                     </td>
                     <td>
@@ -696,7 +729,7 @@ const FeedbackForm = (props) => {
                           })}
                       </div>
                       <span style={{ color: "red" }}>
-                        {errors["overallRation"]}
+                        {errors["OverallRation"]}
                       </span>
                     </td>
                     <td>
