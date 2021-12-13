@@ -250,57 +250,7 @@ const FeedbackForm = (props) => {
     checkSelected(flexibilityOfIngredients);
     checkSelected(flavorProfile);
     checkSelected(overallRation);
-    // //rangeOfIngredients check if is empty or not
-    // if (rangeOfIngredients.options.every((item) => !item.selected)) {
-    //   // setFormIsValid(false);
-    //   isValid = false;
-    //   errors["rangeOfIngredients"] = "An option should be selected";
-    // } else {
-    //   // setFormIsValid(true);
-    //   isValid = true;
-    //   errors["rangeOfIngredients"] = "";
-    // }
-    // if (easeOfUsingIngredients.options.every((item) => !item.selected)) {
-    //   // setFormIsValid(false);
-    //   isValid = false;
-    //   errors["easeOfUsingIngredients"] = "An option should be selected";
-    // } else {
-    //   // setFormIsValid(true);
-    //   isValid = true;
-    //   // console.log(" checked");
-    //   errors["easeOfUsingIngredients"] = "";
-    // }
-    // if (flexibilityOfIngredients.options.every((item) => !item.selected)) {
-    //   isValid = false;
-    //   // setFormIsValid(false);
-    //   errors["flexibilityOfIngredients"] = "An option should be selected";
-    // } else {
-    //   // setFormIsValid(true);
-    //   isValid = true;
-    //   // console.log(" checked");
-    //   errors["flexibilityOfIngredients"] = "";
-    // }
-    // if (flavorProfile.options.every((item) => !item.selected)) {
-    //   // formIsValid = false;
-    //   // setFormIsValid(false);
-    //   isValid = false;
-    //   errors["flavorProfile"] = "An option should be selected";
-    // } else {
-    //   // setFormIsValid(true);
-    //   isValid = true;
-    //   // console.log(" checked");
-    //   errors["flavorProfile"] = "";
-    // }
-    // if (overallRation.options.every((item) => !item.selected)) {
-    //   isValid = false;
-    //   // setFormIsValid(false);
-    //   errors["overallRation"] = "An option should be selected";
-    // } else {
-    //   // setFormIsValid(true);
-    //   isValid = true;
-    //   // console.log(" checked");
-    //   errors["overallRation"] = "";
-    // }
+
     setErrors(errors);
     setFormIsValid(true);
     return isValid;
