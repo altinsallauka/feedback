@@ -93,10 +93,10 @@ const FeedbackForm = (props) => {
       let option = Object.values(list)[0].replaceAll(" ", "");
       let options = list.options;
       if (options.every((item) => !item.selected)) {
-        // isValid = false;
+        isValid = false;
         errors[option] = "An option should be selected";
       } else {
-        // isValid = true;
+        isValid = true;
         errors[option] = "";
       }
     };
@@ -107,7 +107,8 @@ const FeedbackForm = (props) => {
     checkSelected(overallRation);
 
     setErrors(errors);
-    setFormIsValid(true);
+    // setFormIsValid(true);
+    console.log(isValid);
     return isValid;
   };
   const handleChange = (e) => {
