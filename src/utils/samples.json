@@ -1,0 +1,136 @@
+{
+  "samples": [
+    {
+      "PID": "1700000076",
+      "rtypemenu": "Meal:Rations,Patrol,Occidental,Menu 1"
+    },
+    {
+      "PID": "1700000077",
+      "rtypemenu": "Meal:Rations,Patrol,Occidental,Menu 2"
+    },
+    {
+      "PID": "1700000078",
+      "rtypemenu": "Meal:Rations,Patrol,Occidental,Menu 3"
+    },
+    {
+      "PID": "1700000067",
+      "rtypemenu": "Meal:Rations,Patrol,Halal,Menu 1"
+    },
+    {
+      "PID": "1700000068",
+      "rtypemenu": "Meal:Rations,Patrol,Halal,Menu 2"
+    },
+    {
+      "PID": "1700000069",
+      "rtypemenu": "Meal:Rations,Patrol,Halal,Menu 3"
+    },
+    {
+      "PID": "1700000070",
+      "rtypemenu": "Meal:Rations,Patrol,Hindu,Menu 1"
+    },
+    {
+      "PID": "1700000071",
+      "rtypemenu": "Meal:Rations,Patrol,Hindu,Menu 2"
+    },
+    {
+      "PID": "1700000072",
+      "rtypemenu": "Meal:Rations,Patrol,Hindu,Menu 3"
+    },
+    {
+      "PID": "1700000073",
+      "rtypemenu": "Meal:Rations,Patrol,Vegetarian,Menu 1"
+    },
+    {
+      "PID": "1700000074",
+      "rtypemenu": "Meal:Rations,Patrol,Vegetarian,Menu 2"
+    },
+    {
+      "PID": "1700000075",
+      "rtypemenu": "Meal:Rations,Patrol,Vegetarian,Menu 3"
+    },
+    {
+      "PID": "1700000010",
+      "rtypemenu": "Meal:Rations,24hr,Occidental,Menu 1"
+    },
+    {
+      "PID": "1700000065",
+      "rtypemenu": "Meal:Rations,24hr,Occidental,Menu 2"
+    },
+    {
+      "PID": "1700000066",
+      "rtypemenu": "Meal:Rations,24hr,Occidental,Menu 3"
+    },
+    {
+      "PID": "1700000007",
+      "rtypemenu": "Meal:Rations,24hr,Halal,Menu 1"
+    },
+    {
+      "PID": "1700000059",
+      "rtypemenu": "Meal:Rations,24hr,Halal,Menu 2"
+    },
+    {
+      "PID": "1700000060",
+      "rtypemenu": "Meal:Rations,24hr,Halal,Menu 3"
+    },
+    {
+      "PID": "1700000008",
+      "rtypemenu": "Meal:Rations,24hr,Hindu,Menu 1"
+    },
+    {
+      "PID": "1700000061",
+      "rtypemenu": "Meal:Rations,24hr,Hindu,Menu 2"
+    },
+    {
+      "PID": "1700000062",
+      "rtypemenu": "Meal:Rations,24hr,Hindu,Menu 3"
+    },
+    {
+      "PID": "1700000009",
+      "rtypemenu": "Meal:Rations,24hr,Vegetarian,Menu 1"
+    },
+    {
+      "PID": "1700000063",
+      "rtypemenu": "Meal:Rations,24hr,Vegetarian,Menu 2"
+    },
+    {
+      "PID": "1700000064",
+      "rtypemenu": "Meal:Rations,24hr,Vegetarian,Menu 3"
+    },
+    {
+      "PID": "1700000085",
+      "rtypemenu": "Meal:Rations,10man,Occidental,Menu 1"
+    },
+    {
+      "PID": "1700000086",
+      "rtypemenu": "Meal:Rations,10man,Occidental,Menu 2"
+    },
+    {
+      "PID": "1700000087",
+      "rtypemenu": "Meal:Rations,10man,Occidental,Menu 3"
+    },
+    {
+      "PID": "1700000079",
+      "rtypemenu": "Meal:Rations,10man,Halal,Menu 1"
+    },
+    {
+      "PID": "1700000080",
+      "rtypemenu": "Meal:Rations,10man,Halal,Menu 2"
+    },
+    {
+      "PID": "1700000081",
+      "rtypemenu": "Meal:Rations,10man,Halal,Menu 3"
+    },
+    {
+      "PID": "1700000082",
+      "rtypemenu": "Meal:Rations,10man,Hindu,Menu 1"
+    },
+    {
+      "PID": "1700000083",
+      "rtypemenu": "Meal:Rations,10man,Hindu,Menu 2"
+    },
+    {
+      "PID": "1700000084",
+      "rtypemenu": "Meal:Rations,10man,Hindu,Menu 3"
+    }
+  ]
+}

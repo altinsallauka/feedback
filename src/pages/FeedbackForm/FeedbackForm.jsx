@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 // import axios from "axios";
 import "./FeedbackForm.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { addList, postFeedback } from "./actions";
+import { getList, postFeedback } from "./actions";
+// import { postFeedback } from "./actions";
 import pic1 from "../../assets/p1.png";
 import pic2 from "../../assets/p2.png";
 import pic3 from "../../assets/p3.png";
@@ -11,146 +12,14 @@ import Modal from "react-modal";
 import { toggleModal } from "../../components/modal/actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
-import { FormErrors } from "./../../components/form-errors/FormErrors";
+import feedbackService from "../../services/feedback.service";
+// import { FormErrors } from "./../../components/form-errors/FormErrors";
+// import { samples } from "../../utils/samples.json";
 Modal.setAppElement("body");
 const FeedbackForm = (props) => {
-  //   const globalState = useSelector((state) => state);
+  const globalState = useSelector((state) => state);
+  const samples = globalState.FeedbackFormReducer.samples;
   const dispatch = useDispatch();
-  const [samples, setSamples] = useState([
-    {
-      PID: "1700000076",
-      rtypemenu: "Meal:Rations,Patrol,Occidental,Menu 1",
-    },
-    {
-      PID: "1700000077",
-      rtypemenu: "Meal:Rations,Patrol,Occidental,Menu 2",
-    },
-    {
-      PID: "1700000078",
-      rtypemenu: "Meal:Rations,Patrol,Occidental,Menu 3",
-    },
-    {
-      PID: "1700000067",
-      rtypemenu: "Meal:Rations,Patrol,Halal,Menu 1",
-    },
-    {
-      PID: "1700000068",
-      rtypemenu: "Meal:Rations,Patrol,Halal,Menu 2",
-    },
-    {
-      PID: "1700000069",
-      rtypemenu: "Meal:Rations,Patrol,Halal,Menu 3",
-    },
-    {
-      PID: "1700000070",
-      rtypemenu: "Meal:Rations,Patrol,Hindu,Menu 1",
-    },
-    {
-      PID: "1700000071",
-      rtypemenu: "Meal:Rations,Patrol,Hindu,Menu 2",
-    },
-    {
-      PID: "1700000072",
-      rtypemenu: "Meal:Rations,Patrol,Hindu,Menu 3",
-    },
-    {
-      PID: "1700000073",
-      rtypemenu: "Meal:Rations,Patrol,Vegetarian,Menu 1",
-    },
-    {
-      PID: "1700000074",
-      rtypemenu: "Meal:Rations,Patrol,Vegetarian,Menu 2",
-    },
-    {
-      PID: "1700000075",
-      rtypemenu: "Meal:Rations,Patrol,Vegetarian,Menu 3",
-    },
-    {
-      PID: "1700000010",
-      rtypemenu: "Meal:Rations,24hr,Occidental,Menu 1",
-    },
-    {
-      PID: "1700000065",
-      rtypemenu: "Meal:Rations,24hr,Occidental,Menu 2",
-    },
-    {
-      PID: "1700000066",
-      rtypemenu: "Meal:Rations,24hr,Occidental,Menu 3",
-    },
-    {
-      PID: "1700000007",
-      rtypemenu: "Meal:Rations,24hr,Halal,Menu 1",
-    },
-    {
-      PID: "1700000059",
-      rtypemenu: "Meal:Rations,24hr,Halal,Menu 2",
-    },
-    {
-      PID: "1700000060",
-      rtypemenu: "Meal:Rations,24hr,Halal,Menu 3",
-    },
-    {
-      PID: "1700000008",
-      rtypemenu: "Meal:Rations,24hr,Hindu,Menu 1",
-    },
-    {
-      PID: "1700000061",
-      rtypemenu: "Meal:Rations,24hr,Hindu,Menu 2",
-    },
-    {
-      PID: "1700000062",
-      rtypemenu: "Meal:Rations,24hr,Hindu,Menu 3",
-    },
-    {
-      PID: "1700000009",
-      rtypemenu: "Meal:Rations,24hr,Vegetarian,Menu 1",
-    },
-    {
-      PID: "1700000063",
-      rtypemenu: "Meal:Rations,24hr,Vegetarian,Menu 2",
-    },
-    {
-      PID: "1700000064",
-      rtypemenu: "Meal:Rations,24hr,Vegetarian,Menu 3",
-    },
-    {
-      PID: "1700000085",
-      rtypemenu: "Meal:Rations,10man,Occidental,Menu 1",
-    },
-    {
-      PID: "1700000086",
-      rtypemenu: "Meal:Rations,10man,Occidental,Menu 2",
-    },
-    {
-      PID: "1700000087",
-      rtypemenu: "Meal:Rations,10man,Occidental,Menu 3",
-    },
-    {
-      PID: "1700000079",
-      rtypemenu: "Meal:Rations,10man,Halal,Menu 1",
-    },
-    {
-      PID: "1700000080",
-      rtypemenu: "Meal:Rations,10man,Halal,Menu 2",
-    },
-    {
-      PID: "1700000081",
-      rtypemenu: "Meal:Rations,10man,Halal,Menu 3",
-    },
-    {
-      PID: "1700000082",
-      rtypemenu: "Meal:Rations,10man,Hindu,Menu 1",
-    },
-    {
-      PID: "1700000083",
-      rtypemenu: "Meal:Rations,10man,Hindu,Menu 2",
-    },
-    {
-      PID: "1700000084",
-      rtypemenu: "Meal:Rations,10man,Hindu,Menu 3",
-    },
-  ]);
-
   const [selectedPid, setSelectedPid] = useState("");
   const [lotNo, setLotNo] = useState("");
   const [rangeOfIngredients, setRangeOfIngredients] = useState({
@@ -171,6 +40,7 @@ const FeedbackForm = (props) => {
       { radioName: "All right", selected: null },
       { radioName: "Do not like", selected: null },
     ],
+    comment: "",
   });
   const [flexibilityOfIngredients, setFlexibilityOfIngredients] = useState({
     optionName: "Flexibility of Ingredients",
@@ -180,6 +50,7 @@ const FeedbackForm = (props) => {
       { radioName: "All right", selected: null },
       { radioName: "Do not like", selected: null },
     ],
+    comment: "",
   });
   const [flavorProfile, setFlavorProfile] = useState({
     optionName: "Flavor Profile",
@@ -189,6 +60,7 @@ const FeedbackForm = (props) => {
       { radioName: "All right", selected: null },
       { radioName: "Do not like", selected: null },
     ],
+    comment: "",
   });
   const [overallRation, setOverallRation] = useState({
     optionName: "Overall Ration",
@@ -198,9 +70,10 @@ const FeedbackForm = (props) => {
       { radioName: "All right", selected: null },
       { radioName: "Do not like", selected: null },
     ],
+    comment: "",
   });
   const [additionalComments, setAdditionalComments] = useState("");
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState({});
   const [formIsValid, setFormIsValid] = useState(false);
   const modalTitle = "Success";
 
@@ -216,19 +89,16 @@ const FeedbackForm = (props) => {
       errors["selectedPid"] = "";
     }
     const checkSelected = (list) => {
-      let isValid = true;
+      // let isValid = true;
       let option = Object.values(list)[0].replaceAll(" ", "");
       let options = list.options;
       if (options.every((item) => !item.selected)) {
-        isValid = false;
-        // setErrors({ ...errors, option: "An option should be selected" });
+        // isValid = false;
         errors[option] = "An option should be selected";
       } else {
-        isValid = true;
+        // isValid = true;
         errors[option] = "";
-        // setErrors({ ...errors, optionName: "" });
       }
-      console.log(errors);
     };
     checkSelected(rangeOfIngredients);
     checkSelected(easeOfUsingIngredients);
@@ -251,16 +121,6 @@ const FeedbackForm = (props) => {
         break;
       case "lotNo":
         setLotNo(e.target.value);
-        // console.log(e.target.value);
-        // if (e.target.value.length < 6) {
-        //   errors["lotNo"] = "Cannot be empty";
-        //   setFormIsValid(true);
-        //   console.log("error", e.target.value);
-        // } else {
-        //   errors["lotNo"] = " ";
-        //   console.log("ok");
-        //   setFormIsValid(false);
-        // }
         break;
       case "Rangeofingredients":
         setRangeOfIngredients({
@@ -341,7 +201,6 @@ const FeedbackForm = (props) => {
     event.preventDefault();
     if (handleValidation()) {
       // alert("Form submitted");
-      // dispatch(toggleModal(true));
       // setFormIsValid(true);
       dispatch(
         postFeedback({
@@ -359,14 +218,12 @@ const FeedbackForm = (props) => {
       // setFormIsValid(false);
       console.log("Form is not valid");
     }
-
-    // console.log("Feedback Form value:");
   };
 
   useEffect(() => {
-    // console.log(samples);
-    dispatch(addList(samples));
-  }, [samples]);
+    dispatch(getList());
+    // console.log(feedbackService.fetchOptions().samples);
+  }, []);
   return (
     <React.Fragment>
       <div className="d-flex justify-content-center">
@@ -421,7 +278,6 @@ const FeedbackForm = (props) => {
                 <thead>
                   <tr>
                     <th scope="col"></th>
-
                     <th scope="col" className="d-flex test1">
                       <div>
                         <img
@@ -430,7 +286,6 @@ const FeedbackForm = (props) => {
                           alt="Very good"
                         />
                       </div>
-
                       <div>
                         <img
                           src={pic2}
@@ -438,7 +293,6 @@ const FeedbackForm = (props) => {
                           alt="All right"
                         />
                       </div>
-
                       <div>
                         <img
                           src={pic3}
@@ -447,26 +301,20 @@ const FeedbackForm = (props) => {
                         />
                       </div>
                     </th>
-
                     {/* <th>Comment</th> */}
                   </tr>
-
                   <tr>
                     <th className="first-col txt"></th>
-
                     <td>
                       <div className="txt1">
                         <label className="txt2">Very good</label>
                         <label className="txt2">All right</label>
-
                         <label className="txt2">Do not like</label>
                       </div>
                     </td>
-
                     <td></td>
                   </tr>
                 </thead>
-
                 <tbody>
                   <tr>
                     <th className="first-col">Range of Ingredients</th>
@@ -490,7 +338,6 @@ const FeedbackForm = (props) => {
                             );
                           })}
                       </div>
-
                       <span style={{ color: "red" }}>
                         {errors["Rangeofingredients"]}
                       </span>

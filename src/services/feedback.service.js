@@ -1,6 +1,10 @@
 import http from "../utils/http-common";
-
+import data from "../utils/samples.json";
 class FeedbackService {
+  fetchOptions() {
+    return data;
+    // return http.get("/posts");
+  }
   getAll() {
     return http.get("/posts");
   }
