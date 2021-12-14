@@ -202,18 +202,30 @@ const FeedbackForm = (props) => {
     if (handleValidation()) {
       // alert("Form submitted");
       // setFormIsValid(true);
-      dispatch(
-        postFeedback({
-          selectedPid,
-          lotNo,
-          rangeOfIngredients,
-          easeOfUsingIngredients,
-          flexibilityOfIngredients,
-          flavorProfile,
-          overallRation,
-          additionalComments,
-        })
-      ).then(dispatch(toggleModal(true)));
+      let data = {
+        selectedPid,
+        lotNo,
+        rangeOfIngredients,
+        easeOfUsingIngredients,
+        flexibilityOfIngredients,
+        flavorProfile,
+        overallRation,
+        additionalComments,
+      };
+      dispatch({ type: "POST_FEEDBACK", payload: data });
+      dispatch(toggleModal(true));
+      // dispatch(
+      //   postFeedback({
+      //     selectedPid,
+      //     lotNo,
+      //     rangeOfIngredients,
+      //     easeOfUsingIngredients,
+      //     flexibilityOfIngredients,
+      //     flavorProfile,
+      //     overallRation,
+      //     additionalComments,
+      //   })
+      // ).then(dispatch(toggleModal(true)));
     } else {
       // setFormIsValid(false);
       console.log("Form is not valid");

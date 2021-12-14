@@ -1,8 +1,12 @@
 import { call, put, takeLatest } from "redux-saga/effects";
-import { LIST_RECEIVED, GET_LIST } from "./constants";
-import { samples } from "../../utils/samples.json";
+import { GET_LIST, POST_FEEDBACK } from "./constants";
 import feedbackService from "../../services/feedback.service";
-import { getListSuccess, getListFailed, getListError } from "./actions";
+import {
+  getListSuccess,
+  getListError,
+  postFeedbackSuccess,
+  postFeedbackError,
+} from "./actions";
 export function* fetchSamples() {
   try {
     const response = yield call(feedbackService.fetchOptions);
@@ -11,7 +15,17 @@ export function* fetchSamples() {
     yield put(getListError());
   }
 }
+export function* postSample(data) {
+  const feedback = data;
+  // yield console.log(feedback);
+  try {
+    yield put(postFeedbackSuccess(feedback.payload));
+  } catch (e) {
+    yield put(postFeedbackError());
+  }
+}
 
 export default function* feedbackSaga() {
   yield takeLatest(GET_LIST, fetchSamples);
+  yield takeLatest(POST_FEEDBACK, postSample);
 }

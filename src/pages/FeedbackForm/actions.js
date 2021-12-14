@@ -4,6 +4,8 @@ import {
   GET_LIST_ERROR,
   GET_LIST_FAIL,
   POST_FEEDBACK,
+  POST_FEEDBACK_SUCCESS,
+  POST_FEEDBACK_ERROR,
 } from "./constants";
 
 // export const addList = (data) => {
@@ -42,4 +44,10 @@ export const getListError = (data) => {
 };
 export const postFeedback = (data) => {
   return { type: POST_FEEDBACK, payload: data };
+};
+export const postFeedbackSuccess = (data) => {
+  return { type: POST_FEEDBACK_SUCCESS, payload: data };
+};
+export const postFeedbackError = (data) => {
+  return { type: POST_FEEDBACK, payload: {} };
 };
