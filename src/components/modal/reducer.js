@@ -1,3 +1,4 @@
+import produce from "immer";
 import {
   TOGGLE_MODAL,
   TOGGLE_MODAL_SUCCESS,
@@ -10,17 +11,20 @@ const initialState = {
   //   error: null,
   //   isLoading: false,
 };
-const ModalReducer = (state = initialState, action) => {
+const ModalReducer = (state = initialState, action) => produce(state, draft =>{
   switch (action.type) {
     case TOGGLE_MODAL:
-      return state;
+      break;
     case TOGGLE_MODAL_SUCCESS:
-      return { ...state, modalIsOpen: action.payload };
+      draft.modalIsOpen = action.payload;
+      break;
     case TOGGLE_MODAL_ERROR:
-      return { ...state, modalIsOpen: false };
+      draft.modalIsOpen = false;
+      break;
     default:
-      return state;
+      // return state;
+      break;
   }
-};
+});
 
 export default ModalReducer;

@@ -213,8 +213,8 @@ const FeedbackForm = (props) => {
         overallRation,
         additionalComments,
       };
-      dispatch({ type: "POST_FEEDBACK", payload: data });
       dispatch(toggleModal(true));
+      dispatch({ type: "POST_FEEDBACK", payload: data });
       // dispatch(
       //   postFeedback({
       //     selectedPid,
@@ -273,6 +273,7 @@ const FeedbackForm = (props) => {
                 <input
                   type="number"
                   name="lotNo"
+                  value={globalState.FeedbackFormReducer.feedback.lotNo}
                   className="form-control"
                   onChange={handleChange}
                 />
@@ -554,6 +555,7 @@ const FeedbackForm = (props) => {
                   className="form-control"
                   id="additionalComments"
                   rows="3"
+                  // value={globalState.FeedbackFormReducer.feedback.additionalComments}
                   onChange={(e) => setAdditionalComments(e.target.value)}
                 ></textarea>
               </label>

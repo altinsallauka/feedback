@@ -1,3 +1,4 @@
+import produce from "immer";
 import {
   GET_LIST,
   GET_LIST_SUCCESS,
@@ -14,23 +15,38 @@ const initialState = {
   error: null,
   isLoading: false,
 };
-const FeedbackFormReducer = (state = initialState, action) => {
+const FeedbackFormReducer = (state = initialState, action) => 
+  produce(state, draft => {
   switch (action.type) {
     case GET_LIST:
-      return state;
+      // return draft;
+      break;
     case GET_LIST_SUCCESS:
-      return { ...state, samples: action.payload, isLoading: false };
+      // return { ...state, samples: action.payload, isLoading: false };
+      draft.samples = null;
+      draft.samples = action.payload;
+      draft.isLoading = false;
+      break;
     case GET_LIST_ERROR:
-      return { ...state, samples: {}, error: "Something went wrong" };
+      // return { ...state, samples: {}, error: "Something went wrong" };
+      draft.samples = null;
+      draft.error = "GET_LIST_ERROR";
+      break;
     case POST_FEEDBACK:
-      return state;
+      // return state;
+      break;
     case POST_FEEDBACK_SUCCESS:
-      return { ...state, feedback: action.payload, isLoading: false };
+      draft.feedback = null;
+      draft.feedback = action.payload;
+      draft.isLoading = false;
+      break;
     case POST_FEEDBACK_ERROR:
-      return { ...state, feedback: {}, error: "Something went wrong" };
+      draft.feedback = null;
+      draft.error = "POST_FEEDBACK_ERROR";
+      break
     default:
-      return state;
+      break;
   }
-};
+})
 
 export default FeedbackFormReducer;
